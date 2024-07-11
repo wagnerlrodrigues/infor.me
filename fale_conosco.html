@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFOR.ME</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Atendimento.Me</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="mobifamilia.html">MobiFamília</a></li>
+                    <li><a href="professor_conectado_web.html">Professor Conectado Web</a></li>
+                    <li><a href="professor_conectado_app.html">Professor Conectado App</a></li>
+                    <li><a href="calendario_letivo.html">Calendário Letivo</a></li>
+                    <li><a href="mobiphotos_corretor_app.html">MobiPhotos Corretor App</a></li>
+                    <li><a href="corretor_site.html">Corretor Site</a></li>
+                    <li><a href="fale_conosco.html">Fale Conosco</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar técnico...">
+        </div>
+        <div id="cards-container" class="card-container">
+            <!-- Cards serão inseridos aqui pelo JavaScript -->
+        </div>
+    </main>
+    
+
+
+    <script>
+        // Função para ler o arquivo CSV e converter para um array de objetos
+        async function fetchTecnicos() {
+            const response = await fetch('tecnicos.csv');
+            const data = await response.text();
+            const rows = data.split('\n').slice(1);
+            return rows.map(row => {
+                const columns = row.split(',');
+                if (columns.length < 7) {
+                    console.error('Dados inválidos:', row);
+                    return null;
+                }
+
+                const [nome, telefone, link, horario1, horario2, dias, foto] = columns.map(col => col.trim());
+                const [inicio1, fim1] = horario1.split('-').map(time => time.trim());
+                const [inicio2, fim2] = horario2.split('-').map(time => time.trim());
+
+                return {
+                    nome, telefone, link, foto, dias,
+                    horarios: [
+                        { inicio: parseTime(inicio1), fim: parseTime(fim1) },
+                        { inicio: parseTime(inicio2), fim: parseTime(fim2) }
+                    ]
+                };
+            }).filter(tecnico => tecnico !== null);
+        }
+
+        // Função para converter horário "HH:MM" em um objeto Date
+        function parseTime(time) {
+            if (!time) return null;
+            const [hour, minute] = time.split(':').map(Number);
+            const date = new Date();
+            date.setHours(hour);
+            date.setMinutes(minute);
+            return date;
+        }
+
+        // Função para verificar se a hora atual está dentro de qualquer um dos turnos
+        function isActive(tecnico) {
+            const now = new Date();
+            const today = now.getDay(); // 0 (Domingo) - 6 (Sábado)
+            const isWeekday = today >= 1 && today <= 5;
+            const isSaturday = today === 6;
+
+            if ((tecnico.dias === 'seg-sex' && isWeekday) || (tecnico.dias === 'seg-sab' && (isWeekday || isSaturday))) {
+                return tecnico.horarios.some(horario => 
+                    horario.inicio && horario.fim && now >= horario.inicio && now < horario.fim
+                );
+            }
+            return false;
+        }
+
+        async function loadTecnicos() {
+            const tecnicos = await fetchTecnicos();
+
+            // Ordenar técnicos ativos primeiro
+            tecnicos.sort((a, b) => isActive(b) - isActive(a));
+
+            tecnicos.forEach(tecnico => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Verifica se o técnico está ativo em algum dos turnos
+                const ativo = isActive(tecnico);
+                if (ativo) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.add('inactive');
+                }
+
+                card.innerHTML = `
+                    <div class="status-indicator ${ativo ? 'active' : 'inactive'}"></div>
+                    <img src="${tecnico.foto}" alt="${tecnico.nome}">
+                    <h2>${tecnico.nome}</h2>
+                    <p><h3>Telefone</h3>: ${tecnico.telefone}</p>
+                    <p><h3>Horários:</h3> 
+                        ${tecnico.horarios.map(h => `${h.inicio.getHours().toString().padStart(2, '0')}:${h.inicio.getMinutes().toString().padStart(2, '0')}h - ${h.fim.getHours().toString().padStart(2, '0')}:${h.fim.getMinutes().toString().padStart(2, '0')}h`).join(' e ')}
+                    </p>
+                    
+                    <a href="${tecnico.link}" target="_blank"><button>Entrar em contato</button></a>
+                `;
+
+                document.getElementById('cards-container').appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTecnicos);
+    </script>
+</body>
+
+
+</html>
