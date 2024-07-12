@@ -110,10 +110,10 @@
                     <div class="status-indicator ${ativo ? 'active' : 'inactive'}"></div>
                     <img src="${tecnico.foto}" alt="${tecnico.nome}">
                     <h2>${tecnico.nome}</h2>
-                    <p><h3>Telefone</h3>: ${tecnico.telefone}</p>
-                    <p><h3>Horários:</h3> 
+                    <h3>Telefone:</h3> ${tecnico.telefone}
+                    <h3>Horários:</h3> 
                         ${tecnico.horarios.map(h => `${h.inicio.getHours().toString().padStart(2, '0')}:${h.inicio.getMinutes().toString().padStart(2, '0')}h - ${h.fim.getHours().toString().padStart(2, '0')}:${h.fim.getMinutes().toString().padStart(2, '0')}h`).join(' e ')}
-                    </p>
+                  
                     
                     <a href="${tecnico.link}" target="_blank"><button>Entrar em contato</button></a>
                 `;
