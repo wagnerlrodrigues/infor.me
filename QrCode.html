@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar QR Code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Gerador de QR Code</h1>
+    <form id="qrForm">
+        <label for="qrText">Texto para QR Code:</label>
+        <input type="text" id="qrText" name="qrText" required>
+        <button type="submit">Gerar QR Code</button>
+    </form>
+    <br>
+    <div id="qrcode"></div>
+
+    <script>
+        document.getElementById('qrForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const qrText = document.getElementById('qrText').value;
+            const qrCodeDiv = document.getElementById('qrcode');
+            qrCodeDiv.innerHTML = "";  // Limpa o QR Code anterior
+            new QRCode(qrCodeDiv, qrText);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Link do Google Maps</title>
+</head>
+<body>
+    <h1>Gerador de Link do Google Maps</h1>
+    <form id="coordsForm">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" required>
+        <br>
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" required>
+        <br>
+        <button type="submit">Gerar Link</button>
+    </form>
+    <br>
+    <a id="mapsLink" href="#" target="_blank">Veja no Google Maps</a>
+
+    <script>
+        document.getElementById('coordsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+            const mapsLink = document.getElementById('mapsLink');
+            mapsLink.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            mapsLink.textContent = `Veja no Google Maps: ${latitude}, ${longitude}`;
+        });
+    </script>
+</body>
+</html>

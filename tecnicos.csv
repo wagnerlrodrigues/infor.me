@@ -1,6 +1,6 @@
 nome,telefone,LINK,horario1,horario2,,foto
-Carolina Rodrigues,86999423876,https://api.whatsapp.com/send?phone=86999423876,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/CarolinaRodrigues.jpg
-Rayane Vitoria,86999424145,https://api.whatsapp.com/send?phone=86999424145,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/RayaneVitoria.jpg
+CAROLINA RODRIGUES,86999423876,https://api.whatsapp.com/send?phone=86999423876,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/CarolinaRodrigues.jpg
+RAYANE VITÓRIA,86999424145,https://api.whatsapp.com/send?phone=86999424145,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/RayaneVitoria.jpg
 LAILA SALES,86974007951,https://api.whatsapp.com/send?phone=86974007951,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/LAILASALES.jpg
 VITOR OLIVEIRA,86981423081,https://api.whatsapp.com/send?phone=86981423081,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/VITOROLIVEIRA.jpg
 MARTA ANDRADE,86981015811,https://api.whatsapp.com/send?phone=86981015811,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/MARTAANDRADE.jpg
@@ -13,5 +13,4 @@ MARCOS CARDOSO,86981806188,https://api.whatsapp.com/send?phone=86981806188,7:20-
 ANDERSON BRAGA,86981896470,https://api.whatsapp.com/send?phone=86981896470,14:20-20:30,00:00-00:00,seg-sab,imagens/tecnicos/ANDERSONBRAGA.jpg
 NATHÁLIA RODRIGUES,86994063825,https://api.whatsapp.com/send?phone=86994063825,7:20-12:20,13:20-17:20,seg-sex,imagens/tecnicos/NATHÁLIARODRIGUES.jpg
 LENARA RAVENA,86995114541,https://api.whatsapp.com/send?phone=86995114541,14:20-20:30,00:00-00:00,seg-sab,imagens/tecnicos/LENARARAVENA.jpg
-RUAN CARLOS,86995821152,https://api.whatsapp.com/send?phone=86995821152,7:20-12:20,00:00-00:00,seg-sex,imagens/tecnicos/RUANCARLOS.jpg
-Wellyson William,86999439123,https://api.whatsapp.com/send?phone=86999439123,14:20-20:30,00:00-00:00,seg-sab,imagens/tecnicos/WellysonWilliam.jpg
+WELLYSON WILLIAM,86999439123,https://api.whatsapp.com/send?phone=86999439123,14:20-20:30,00:00-00:00,seg-sab,imagens/tecnicos/WellysonWilliam.jpg
