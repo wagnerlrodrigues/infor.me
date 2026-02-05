@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ajuda Técnica</title>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .card {
+      background: #1e2a33;
+      padding: 24px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 22px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    select, textarea, button {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+    select, textarea {
+      background: #f5f5f5;
+      color: #000;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    button {
+      margin-top: 20px;
+      background: #25d366;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { opacity: .9; }
+    .info {
+      margin-top: 12px;
+      font-size: 12px;
+      opacity: .8;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Solicitação de Ajuda Técnica</h1>
+
+    <label for="escola">Escola</label>
+    <select id="escola">
+      <option value="">Carregando escolas...</option>
+    </select>
+
+    <label for="motivo">Motivo do pedido</label>
+    <textarea id="motivo" placeholder="Descreva o problema..."></textarea>
+
+    <button onclick="enviarWhatsApp()">Pedir ajuda no WhatsApp</button>
+
+    <div class="info">O atendimento será direcionado ao técnico responsável</div>
+  </div>
+
+<script>
+// Estrutura esperada:
+// tecnicos.csv: id_tecnico,nome,telefone
+// tecnico_escola.csv: escola,id_tecnico
+
+let tecnicos = {};
+let escolaTecnico = {};
+
+async function carregarCSV(url) {
+  const resp = await fetch(url);
+  const texto = await resp.text();
+  const linhas = texto.trim().split("\n");
+  const cab = linhas.shift().split(",");
+  return linhas.map(l => {
+    const v = l.split(",");
+    return cab.reduce((o, c, i) => (o[c.trim()] = v[i].trim(), o), {});
+  });
+}
+
+async function iniciar() {
+  const listaTecnicos = await carregarCSV('tecnicos.csv');
+  listaTecnicos.forEach(t => tecnicos[t.id_tecnico] = t);
+
+  const listaEscolas = await carregarCSV('tecnico_escola.csv');
+  const select = document.getElementById('escola');
+  select.innerHTML = '<option value="">Selecione a escola</option>';
+
+  listaEscolas.forEach(e => {
+    escolaTecnico[e.escola] = e.id_tecnico;
+    const opt = document.createElement('option');
+    opt.value = e.escola;
+    opt.textContent = e.escola;
+    select.appendChild(opt);
+  });
+}
+
+function enviarWhatsApp() {
+  const escola = document.getElementById('escola').value;
+  const motivo = document.getElementById('motivo').value.trim();
+
+  if (!escola || !motivo) {
+    alert('Selecione a escola e informe o motivo.');
+    return;
+  }
+
+  const idTec = escolaTecnico[escola];
+  const tec = tecnicos[idTec];
+
+  if (!tec) {
+    alert('Nenhum técnico encontrado para essa escola.');
+    return;
+  }
+
+  const msg = `Olá ${tec.nome}, preciso de ajuda técnica.%0AEscola: ${escola}%0AMotivo: ${motivo}`;
+  const url = `https://wa.me/55${tec.telefone}?text=${msg}`;
+
+  window.open(url, '_blank');
+}
+
+iniciar();
+</script>
+</body>
+</html>
